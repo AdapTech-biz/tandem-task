@@ -18,6 +18,7 @@ let createProfile = function (requestBody, userID = 0) { //add tokenID back in
             birthDate: birthDate,
             email: email
         }, function (err, newProfile) {
+            //Code block used only for testing
             console.log(newProfile);
             Profile.findById("f47e35b6d55dcf6c1fee18bf", function (err, person) {
                 // console.log(person);
