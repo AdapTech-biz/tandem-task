@@ -1,9 +1,9 @@
-let express = require('express');
-let router = express.Router();
-let dbHelper = require('../utils/dbHelper');
-let serverMethods = require('../utils/serverMethods');
-let formidable = require('formidable');
-let cloudinary = require('cloudinary');
+var express = require('express');
+var router = express.Router();
+var dbHelper = require('../utils/dbHelper');
+var serverMethods = require('../utils/serverMethods');
+var formidable = require('formidable');
+var cloudinary = require('cloudinary');
 
 cloudinary.config({
     cloud_name: 'xyd93',
@@ -23,8 +23,8 @@ router.get('/:id', function(req, res, next) {
 });
 
 router.patch('/:id', function(req, res, next){
-    let profileID = req.params.id;
-    let updates = req.body;
+    var profileID = req.params.id;
+    var updates = req.body;
 
 
    dbHelper.updateProfile(profileID, updates, function (updateStatus) {
@@ -40,7 +40,7 @@ router.patch('/:id', function(req, res, next){
 });
 
 router.get('/:id/upload', function (req, res, next) {
-    let profileID = req.params.id;
+    var profileID = req.params.id;
     console.log(profileID);
    dbHelper.findProfileWithID(profileID, function (profile) {
        console.log(profile);
@@ -50,13 +50,13 @@ router.get('/:id/upload', function (req, res, next) {
 
 router.patch('/:id/upload', function (req, res, next) {
 
-    let userID = req.params.id;
-    let form = new formidable.IncomingForm();
+    var userID = req.params.id;
+    var form = new formidable.IncomingForm();
     form.parse(req, function(err, fields, files) {
         if (err) {
             console.log(err);
         }
-        let oldpath = files.userPic.path;
+        var oldpath = files.userPic.path;
         cloudinary.v2.uploader.upload(oldpath,  {
             public_id: userID,
             upload_preset: 'ProfileImage'

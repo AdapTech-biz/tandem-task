@@ -1,25 +1,26 @@
-let createError = require('http-errors');
-let express = require('express');
-let mongoose = require('mongoose');
-let path = require('path');
-let cookieParser = require('cookie-parser');
-let logger = require('morgan');
-let methodOverride = require("method-override");
-let admin = require('firebase-admin');
-let serviceAccount = require('./pinup-ac1d5-firebase-adminsdk-ocohu-e80e97c58c.json');
-let seed = require('./Seed/generateDBSeed');
 
-let indexRouter = require('./routes/index');
-let profileRouter = require('./routes/profiles');
-let usersRouter = require('./routes/users');
+var createError = require('http-errors');
+var express = require('express');
+var mongoose = require('mongoose');
+var path = require('path');
+var cookieParser = require('cookie-parser');
+var logger = require('morgan');
+var methodOverride = require("method-override");
+var admin = require('firebase-admin');
+var serviceAccount = require('./pinup-ac1d5-firebase-adminsdk-ocohu-e80e97c58c.json');
+var seed = require('./Seed/generateDBSeed');
 
-let app = express();
+var indexRouter = require('./routes/index');
+var profileRouter = require('./routes/profiles');
+var usersRouter = require('./routes/users');
+
+var app = express();
 
 
 /************Clears data from DB********************/
-let Profile = require("./models/profile");
-// let Wallet = require("./models/wallet");
-// let Task = require("./models/task");
+var Profile = require("./models/profile");
+// var Wallet = require("./models/wallet");
+// var Task = require("./models/task");
 //  Profile.remove({}, function(err){
 //       if(err){
 //           console.log(err);

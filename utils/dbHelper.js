@@ -1,16 +1,16 @@
-let Profile = require("../models/profile");
-let Wallet  = require( "../models/wallet");
-let Task  = require( "../models/task");
-let Transaction = require('../models/transaction');
-let TransactionHistory  = require( "../models/transactionHistory");
-let serverMethods = require('../utils/serverMethods');
-let StellarSdk = require('stellar-sdk');
+var Profile = require("../models/profile");
+var Wallet  = require( "../models/wallet");
+var Task  = require( "../models/task");
+var Transaction = require('../models/transaction');
+var TransactionHistory  = require( "../models/transactionHistory");
+var serverMethods = require('../utils/serverMethods');
+var StellarSdk = require('stellar-sdk');
 
-let createProfile = function (requestBody, userID = 0) { //add tokenID back in
-    let firstName = requestBody.fName;
-    let lastName = requestBody.lName;
-    let birthDate = requestBody.birthDate;
-    let email = requestBody.email;
+var createProfile = function (requestBody, userID = 0) { //add tokenID back in
+    var firstName = requestBody.fName;
+    var lastName = requestBody.lName;
+    var birthDate = requestBody.birthDate;
+    var email = requestBody.email;
     if (userID === 0) { //used for DB seeding
         Profile.create({
             firstName: firstName,
@@ -53,9 +53,9 @@ let createProfile = function (requestBody, userID = 0) { //add tokenID back in
     }
 };
 
-let populateWallet = function (address, pKey, walletOwner, callback) {
+var populateWallet = function (address, pKey, walletOwner, callback) {
 
-    let server = new StellarSdk.Server('https://horizon-testnet.stellar.org');
+    var server = new StellarSdk.Server('https://horizon-testnet.stellar.org');
     server.loadAccount(address).then(function(account) {
 
         Wallet.create({
@@ -72,8 +72,8 @@ let populateWallet = function (address, pKey, walletOwner, callback) {
     });
 };
 
-let findUsersForTaskCreation = function (profile1, profile2, callback) {
-    let creator, acceptor;
+var findUsersForTaskCreation = function (profile1, profile2, callback) {
+    var creator, acceptor;
     Profile.find({ $or: [ { _id: profile1 }, { _id: profile2 } ] }, function (err, profiles) {
         try{
 
@@ -91,7 +91,7 @@ let findUsersForTaskCreation = function (profile1, profile2, callback) {
     });
 };
 
-let createTask = function (taskInfo) {
+var createTask = function (taskInfo) {
     Task.create(taskInfo, function (err, task) {
         try{
             console.log(task);
@@ -106,7 +106,7 @@ let createTask = function (taskInfo) {
     });
 };
 
-let compeletTask = function (taskID, callback){
+var compeletTask = function (taskID, callback){
   Task.findById(taskID, function (err, task) {
 
       try{
@@ -119,9 +119,9 @@ let compeletTask = function (taskID, callback){
   })
 };
 
-let createTransactionAndHistory = function (completedTask){
+var createTransactionAndHistory = function (completedTask){
 
-    let transaction = {
+    var transaction = {
         from: completedTask.creator,
         to: completedTask.acceptor,
         date: Date.now(),
@@ -146,9 +146,9 @@ let createTransactionAndHistory = function (completedTask){
 };
 
 
-let updateProfile = function (profileID, updates, callback) {
+var updateProfile = function (profileID, updates, callback) {
 
-    let conditions = {
+    var conditions = {
         _id: profileID
     };
 
@@ -159,7 +159,7 @@ let updateProfile = function (profileID, updates, callback) {
     });
 };
 
-let findProfileWithID = function (dbID, callback) {
+var findProfileWithID = function (dbID, callback) {
     Profile.findById(dbID, function (err, foundProfile) {
         if (err)
             console.log(err);
@@ -167,7 +167,7 @@ let findProfileWithID = function (dbID, callback) {
     });
 };
 
-let retriveAllUserInfo = function (profileID, callback){
+var retriveAllUserInfo = function (profileID, callback){
     try{
         Profile.findById(profileID).populate( "connections").populate("acceptedTasks").populate("createdTasks").exec(function (err, foundProfile) {
             if (err)
@@ -175,7 +175,7 @@ let retriveAllUserInfo = function (profileID, callback){
             Wallet.findOne({owner: foundProfile}, function (err, foundWallet) {
 
                 TransactionHistory.find({wallet: foundWallet}, function (err, transactionsArray) {
-                    let allInfo = {
+                    var allInfo = {
                         userProfile: foundProfile,
                         userWallet: foundWallet,
                         userTransactions: transactionsArray

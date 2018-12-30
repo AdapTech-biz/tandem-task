@@ -1,6 +1,6 @@
-let mongoose = require("mongoose");
+var mongoose = require("mongoose");
 
-let ProfileSchema = new mongoose.Schema({
+var ProfileSchema = new mongoose.Schema({
     firstName: { type : String , required : true },
     lastName: { type : String , required : true },
     email: {type : String},

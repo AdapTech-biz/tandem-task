@@ -1,12 +1,12 @@
-let faker = require('faker');
-let firebase = require('firebase');
-let Profile = require('../models/profile');
-let serverMethods = require('../utils/serverMethods');
-let dbHelper = require('../utils/dbHelper');
+var faker = require('faker');
+var firebase = require('firebase');
+var Profile = require('../models/profile');
+var serverMethods = require('../utils/serverMethods');
+var dbHelper = require('../utils/dbHelper');
 
-let generateProfile = function () {
+var generateProfile = function () {
 
-    let fakeUserInfomation = {
+    var fakeUserInfomation = {
         fName: faker.name.firstName(),
         lName: faker.name.lastName(),
         email: faker.internet.email(),
@@ -19,15 +19,15 @@ let generateProfile = function () {
 
 };
 
-let findUsersForTaskCreation = function (profile1, profile2, callback) {
+var findUsersForTaskCreation = function (profile1, profile2, callback) {
     dbHelper.findUsersForTaskCreation(profile1, profile2, function (creator, acceptor) {
         callback(creator, acceptor);
     })
 };
 
-let generateTask = function(creator, acceptor) {
+var generateTask = function(creator, acceptor) {
 
-    let task = {
+    var task = {
         title: faker.name.title(),
         deadline: faker.date.future(),
         reward: faker.finance.amount(),

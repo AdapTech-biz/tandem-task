@@ -1,17 +1,17 @@
-let formidable = require( "formidable");
-let admin  = require( "firebase-admin");
-let firebase  = require( "firebase");
-let StellarSdk  = require( "stellar-sdk");
-let cloudinary = require('cloudinary');
+var formidable = require( "formidable");
+var admin  = require( "firebase-admin");
+var firebase  = require( "firebase");
+var StellarSdk  = require( "stellar-sdk");
+var cloudinary = require('cloudinary');
 
-// let createUserLogIn = function (requestBody, callback) {
+// var createUserLogIn = function (requestBody, callback) {
 //
 //     // console.log(requestBody);
 //
 //
 //     firebase.auth().createUserWithEmailAndPassword(requestBody.email, requestBody.password).then(function (createdUser) {
-//         let userID = generateDBID(createdUser.user.uid);
-//         let actionCodeSettings = {
+//         var userID = generateDBID(createdUser.user.uid);
+//         var actionCodeSettings = {
 //             url: 'https://www.pinup-ac1d5.firebaseapp.com/?email=' + createdUser.email,
 //             iOS: {
 //                 bundleId: 'com.xyd93.PinUp'
@@ -36,9 +36,9 @@ let cloudinary = require('cloudinary');
  *
  *  Unique 12-bit ID hex creation */
 
-let generateDBID = function (identifier, callback) {
+var generateDBID = function (identifier, callback) {
     console.log("generateDBID--Firebase UID: " + identifier);
-    let generatedHash = require('crypto')
+    var generatedHash = require('crypto')
         .createHash('sha256')
         .update(identifier, 'utf8')
         .digest('hex');
@@ -49,15 +49,15 @@ let generateDBID = function (identifier, callback) {
 
 
 
-let createWallet = function (walletOwner, callback) {
+var createWallet = function (walletOwner, callback) {
 
-    let pair = StellarSdk.Keypair.random();
-    let publicKey = pair.publicKey(); //generates public and private key pair for lumen wallet
-    let secret = pair.secret();
+    var pair = StellarSdk.Keypair.random();
+    var publicKey = pair.publicKey(); //generates public and private key pair for lumen wallet
+    var secret = pair.secret();
 
 
     // generates a wallet balance  = require( Stellar test network
-    let request = require('request');
+    var request = require('request');
     request.get({
         url: 'https://friendbot.stellar.org',
         qs: {addr: publicKey},
@@ -82,27 +82,27 @@ let createWallet = function (walletOwner, callback) {
 
 /** Server-side token auth
  *  Verifies the auth token and returns the Database id */
-let serverTokenAuth = function (idToken, callback) {
+var serverTokenAuth = function (idToken, callback) {
     admin.auth().verifyIdToken(idToken)
         .then(function (decodedToken) {
             // console.log("serverTokenAuth--firebaseUID: " + decodedToken.uid);
             callback(decodedToken.uid);
-            // console.log("Database ID let: " + databaseID);
+            // console.log("Database ID var: " + databaseID);
         });
 
 };
 
 
 
-let uploadImageToCDN = function (req){
+var uploadImageToCDN = function (req){
 
-    let form = new formidable.IncomingForm();
+    var form = new formidable.IncomingForm();
     form.parse(req, function(err, fields, files) {
         if (err) {
             console.log(err);
         }
 
-        let oldpath = files.userPic.path;
+        var oldpath = files.userPic.path;
 
         cloudinary.v2.uploader.upload(oldpath,  {
             public_id: 'profile/display/' + req.body.userID
