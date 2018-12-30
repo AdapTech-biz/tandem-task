@@ -3,7 +3,6 @@ let Wallet  = require( "../models/wallet");
 let Task  = require( "../models/task");
 let Transaction = require('../models/transaction');
 let TransactionHistory  = require( "../models/transactionHistory");
-let fs  = require( "fs");
 let serverMethods = require('../utils/serverMethods');
 let StellarSdk = require('stellar-sdk');
 
