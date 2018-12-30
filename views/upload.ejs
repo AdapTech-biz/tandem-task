@@ -1,0 +1,25 @@
+<% include partials/header%>
+
+
+
+<div id="all">
+    <div class="section" id="profile-body">
+
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <h2 id="upload-title">Update Profile Picture</h2>
+                    <div class="card " id="upload-profile-pic-container" style="width: 30rem;">
+
+                        <form action= <%="/profiles/" + userProfile._id + "/upload?_method=PATCH" %> method="POST" enctype="multipart/form-data">
+                        <input type="file" name="userPic" accept="image/jpeg" />
+                        <input type="submit" class="btn" value="Update Picture!">
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <% include partials/footer %>
