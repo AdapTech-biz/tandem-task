@@ -1,4 +1,3 @@
-
 var createError = require('http-errors');
 var express = require('express');
 var mongoose = require('mongoose');
@@ -8,67 +7,10 @@ var logger = require('morgan');
 var methodOverride = require("method-override");
 var admin = require('firebase-admin');
 var serviceAccount = require('./pinup-ac1d5-firebase-adminsdk-ocohu-e80e97c58c.json');
-var seed = require('./Seed/generateDBSeed');
-
 var indexRouter = require('./routes/index');
 var profileRouter = require('./routes/profiles');
 var usersRouter = require('./routes/users');
-
 var app = express();
-
-
-/************Clears data from DB********************/
-var Profile = require("./models/profile");
-// var Wallet = require("./models/wallet");
-// var Task = require("./models/task");
-//  Profile.remove({}, function(err){
-//       if(err){
-//           console.log(err);
-//       }
-//       console.log("Profile db cleared");
-//  });
-//  Wallet.remove({}, function(err){
-//       if(err){
-//           console.log(err);
-//       }
-//       console.log("Wallet db cleared");
-//  });
-//  Task.remove({}, function(err){
-//       if(err){
-//           console.log(err);
-//       }
-//       console.log("Task db cleared");
-//  });
-/****************End of Clearing DB****************/
-
-/** Generate fake user profiles for testing/dev */
-// seed.generateProfile();
-
-/** Remove all profiles EXCEPT for Xavier's */
-// Profile.deleteMany({ firstName : { $ne: "Xavier" } }, function (err, result) {
-//     try{
-//         console.log(result)
-//     }catch (err) {
-//         console.log(err)
-//     }
-// } );
-
-// Profile.find({_id: 'f47e35b6d55dcf6c1fee18bf'}, function (err, person) {
-//     try{
-//         console.log(person);
-//     } catch (err) {
-//         console.log(err)
-//     }
-// });
-
-// seed.findUsersForTaskCreation( 'f47e35b6d55dcf6c1fee18bf', '5c1ae39bc1377c2a20902dbd', function (creator, acceptor) {
-//     seed.generateTask(creator, acceptor);
-// });
-
-
-
-
-
 
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),

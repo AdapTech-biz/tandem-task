@@ -16,7 +16,8 @@ var createProfile = function (requestBody, userID = 0) { //add tokenID back in
             firstName: firstName,
             lastName: lastName,
             birthDate: birthDate,
-            email: email
+            email: email,
+            pictureURL: requestBody.pictureURL
         }, function (err, newProfile) {
             //Code block used only for testing
             console.log(newProfile);
@@ -28,7 +29,11 @@ var createProfile = function (requestBody, userID = 0) { //add tokenID back in
                 newProfile.save();
 
                 serverMethods.createWallet(newProfile, function (publicKey, secret, walletOwner) {
-                    populateWallet(publicKey, secret, walletOwner);
+                    populateWallet(publicKey, secret, walletOwner, function (walletAddress) {
+                        TransactionHistory.create({address: walletAddress}, function (err, transactionHistory) {
+                            if (err) {console.log(`Creating Transaction History: ${err}`)}
+                        })
+                    });
                 });
             });
 
@@ -39,7 +44,8 @@ var createProfile = function (requestBody, userID = 0) { //add tokenID back in
             firstName: firstName,
             lastName: lastName,
             birthDate: birthDate,
-            email: email
+            email: email,
+            pictureURL: ""
         }, function (err, newProfile) {
             console.log(newProfile);
             serverMethods.createWallet(newProfile, function (publicKey, secret, walletOwner) {
@@ -106,13 +112,13 @@ var createTask = function (taskInfo) {
     });
 };
 
-var compeletTask = function (taskID, callback){
+var compeleteTask = function (taskID){
   Task.findById(taskID, function (err, task) {
 
       try{
           task.pending = false;
           task.save();
-          callback(task);
+          createTransactionAndHistory(task);
       }catch (err) {
           console.log(err)
       }
@@ -124,14 +130,17 @@ var createTransactionAndHistory = function (completedTask){
     var transaction = {
         from: completedTask.creator,
         to: completedTask.acceptor,
-        date: Date.now(),
+        transactionDate: Date.now(),
         forTask: completedTask
     };
     try{
         // Had to find the wallets of the owner from the completed task to assign transaction history
     Wallet.find({ $or: [ { owner: completedTask.creator }, { owner: completedTask.acceptor } ] }, function (err, walletsArray) {
             Transaction.create(transaction, function (err, newTransaction) { //created new Transaction for completed task
-                TransactionHistory.find({ $or: [ { address: walletsArray[0] }, { address: walletsArray[1] } ] }, function (err, historyArray) {
+                console.log(walletsArray)
+
+                TransactionHistory.find({ $or: [ { address: walletsArray[0].address }, { address: walletsArray[1].address } ] }, function (err, historyArray) {
+                    console.log(historyArray)
                     historyArray[0].history.push(newTransaction);
                     historyArray[1].history.push(newTransaction);
                     historyArray[0].save();
@@ -167,14 +176,26 @@ var findProfileWithID = function (dbID, callback) {
     });
 };
 
+var findTaskwithID = function (taskID, callback){
+    Task.findById(taskID, function (err, task) {
+        if (err)
+            console.log(err);
+        callback(task);
+    })
+};
+
 var retriveAllUserInfo = function (profileID, callback){
     try{
-        Profile.findById(profileID).populate( "connections").populate("acceptedTasks").populate("createdTasks").exec(function (err, foundProfile) {
+        Profile.findById(profileID).populate( {path: "connections", select: ["firstName", "pictureURL", "_id"]})
+            .populate({path: "acceptedTasks", populate :({ path: "creator", select: ["firstName", "pictureURL", "_id"]})})
+            .populate({path: "createdTasks", populate:({path: "acceptor", select: ["firstName", "pictureURL", "_id"]})})
+            .exec(function (err, foundProfile) {
             if (err)
                 console.log(err);
             Wallet.findOne({owner: foundProfile}, function (err, foundWallet) {
 
-                TransactionHistory.find({wallet: foundWallet}, function (err, transactionsArray) {
+                TransactionHistory.findOne({address: foundWallet.address}).populate( {path: "history", populate: ({path: "forTask"})})
+                    .exec (function(err, transactionsArray) {
                     var allInfo = {
                         userProfile: foundProfile,
                         userWallet: foundWallet,
@@ -194,11 +215,13 @@ var retriveAllUserInfo = function (profileID, callback){
 
 module.exports = {
     findProfileWithID: findProfileWithID,
-    retriveAllUserInfo: retriveAllUserInfo,
-    populateWallet: populateWallet,
-    createProfile: createProfile,
-    updateProfile: updateProfile,
     findUsersForTaskCreation: findUsersForTaskCreation,
+    findTaskwithID: findTaskwithID,
+    retriveAllUserInfo: retriveAllUserInfo,
+    createProfile: createProfile,
+    populateWallet: populateWallet,
+    updateProfile: updateProfile,
     createTask: createTask,
+    compeleteTask: compeleteTask,
     createTransactionAndHistory: createTransactionAndHistory
 };
