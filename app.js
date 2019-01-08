@@ -14,7 +14,7 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-console.log(process.env.DBLINK);
+
 mongoose.connect(process.env.DBLINK, { dbName: process.env.DBNAME, useNewUrlParser: true });
 
 app.use(logger('dev'));
