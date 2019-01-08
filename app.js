@@ -5,17 +5,22 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var methodOverride = require("method-override");
+var admin = require('firebase-admin');
 var indexRouter = require('./routes/index');
 var profileRouter = require('./routes/profiles');
 var usersRouter = require('./routes/users');
 var app = express();
 
+admin.initializeApp({
+    credential: admin.credential.cert(process.env.adminKey),
+    databaseURL: process.env.FBDBURL
+});
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-
-mongoose.connect(process.env.DBLINK, { dbName: process.env.DBNAME, useNewUrlParser: true });
+mongoose.connect(process.env.DBLINK, { dbName: DBNAME, useNewUrlParser: true });
 
 app.use(logger('dev'));
 app.use(express.json());
