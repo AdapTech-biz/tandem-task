@@ -5,12 +5,12 @@ var serverMethods = require('../utils/serverMethods');
 var firebase = require('firebase');
 
 var config = {
-    apiKey: "AIzaSyAt_KvboflQ4QAZnS1fdi8O1vMVmt31qsc",
-    authDomain: "pinup-ac1d5.firebaseapp.com",
-    databaseURL: "https://pinup-ac1d5.firebaseio.com",
-    projectId: "pinup-ac1d5",
-    storageBucket: "pinup-ac1d5.appspot.com",
-    messagingSenderId: "115970266232"
+    apiKey: process.env.FBKEY,
+    authDomain: process.env.FBauthDomain,
+    databaseURL: process.env.FBDBURL,
+    projectId: process.env.FBprojectID,
+    storageBucket: process.env.FBstorageBucket,
+    messagingSenderId: process.env.FBmessagingSenderID
 };
 firebase.initializeApp(config);
 

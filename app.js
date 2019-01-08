@@ -5,23 +5,17 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var methodOverride = require("method-override");
-var admin = require('firebase-admin');
-var serviceAccount = require('./pinup-ac1d5-firebase-adminsdk-ocohu-e80e97c58c.json');
 var indexRouter = require('./routes/index');
 var profileRouter = require('./routes/profiles');
 var usersRouter = require('./routes/users');
 var app = express();
 
-admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount),
-    databaseURL: "https://pinup-ac1d5.firebaseio.com"
-});
-
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-mongoose.connect('mongodb+srv://group:cmsc495_Group2@cmcs495-a596k.mongodb.net/', { dbName: 'tandem_task', useNewUrlParser: true });
+console.log(process.env.DBLINK);
+mongoose.connect(process.env.DBLINK, { dbName: process.env.DBNAME, useNewUrlParser: true });
 
 app.use(logger('dev'));
 app.use(express.json());
