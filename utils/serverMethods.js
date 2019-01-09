@@ -1,36 +1,8 @@
 var formidable = require( "formidable");
 var admin  = require( "firebase-admin");
-var firebase  = require( "firebase");
 var StellarSdk  = require( "stellar-sdk");
 var cloudinary = require('cloudinary');
 
-// var createUserLogIn = function (requestBody, callback) {
-//
-//     // console.log(requestBody);
-//
-//
-//     firebase.auth().createUserWithEmailAndPassword(requestBody.email, requestBody.password).then(function (createdUser) {
-//         var userID = generateDBID(createdUser.user.uid);
-//         var actionCodeSettings = {
-//             url: 'https://www.pinup-ac1d5.firebaseapp.com/?email=' + createdUser.email,
-//             iOS: {
-//                 bundleId: 'com.xyd93.PinUp'
-//             },
-//             handleCodeInApp: true
-//         };
-//         createdUser.user.sendEmailVerification(actionCodeSettings).then(function (value) {
-//             console.log("Email sent");
-//             console.log(value)
-//         }).catch(function (reason) {
-//             console.log(reason);
-//         });
-//         // return (createdUser.user.uid);
-//         callback(requestBody, userID);
-//     })
-//         .catch(function (reason) {
-//             console.log(reason)
-//         })
-// };
 
 /** Database helper models
  *
@@ -83,6 +55,7 @@ var createWallet = function (walletOwner, callback) {
 /** Server-side token auth
  *  Verifies the auth token and returns the Database id */
 var serverTokenAuth = function (idToken, callback) {
+
     admin.auth().verifyIdToken(idToken)
         .then(function (decodedToken) {
             // console.log("serverTokenAuth--firebaseUID: " + decodedToken.uid);

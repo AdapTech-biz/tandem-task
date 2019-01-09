@@ -11,16 +11,22 @@ var profileRouter = require('./routes/profiles');
 var usersRouter = require('./routes/users');
 var app = express();
 
+
+var newJSON = JSON.parse(process.env.json);
+
+
 admin.initializeApp({
-    credential: admin.credential.cert(process.env.adminKey),
-    databaseURL: process.env.FBDBURL
-});
+            credential: admin.credential.cert(newJSON),
+            databaseURL: process.env.FBDBURL
+        });
+
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-mongoose.connect(process.env.DBLINK, { dbName: DBNAME, useNewUrlParser: true });
+mongoose.connect(process.env.DBLINK, { dbName: process.env.DBNAME, useNewUrlParser: true });
 
 app.use(logger('dev'));
 app.use(express.json());
