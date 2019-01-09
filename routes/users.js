@@ -43,7 +43,8 @@ router.post('/login', function (req, res, next) {
                 // return serverMethods.serverTokenAuth(value); //prints the UID from Firebase
                 serverMethods.serverTokenAuth(value, function (firebaseID) {
                     serverMethods.generateDBID(firebaseID, function (profileID) {
-                        res.redirect('/profiles/' + profileID);
+
+                       return res.redirect('/profiles/' + profileID);
 
                     });
                 });

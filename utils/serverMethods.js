@@ -45,13 +45,6 @@ var createWallet = function (walletOwner, callback) {
     });
 };
 
-
-
-
-
-
-
-
 /** Server-side token auth
  *  Verifies the auth token and returns the Database id */
 var serverTokenAuth = function (idToken, callback) {

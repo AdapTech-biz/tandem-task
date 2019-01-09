@@ -6,9 +6,9 @@ var formidable = require('formidable');
 var cloudinary = require('cloudinary');
 
 cloudinary.config({
-    cloud_name: 'xyd93',
-    api_key: '374984796538663',
-    api_secret: 'gzXNVYDMWNEEvhv1HEmkJO3wvqU'
+    cloud_name: process.env.CLOUDNAME,
+    api_key: process.env.CLOUDAPIKEY,
+    api_secret: process.env.CLOUDSECRET
 });
 
 
@@ -16,7 +16,7 @@ cloudinary.config({
 /* GET users listing. */
 router.get('/:id', function(req, res, next) {
     dbHelper.retriveAllUserInfo(req.params.id, function (results) {
-       // res.send(results);
+
        res.render('profileView', {userData: results})
     });
 
