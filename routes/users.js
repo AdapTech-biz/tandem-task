@@ -39,7 +39,7 @@ router.post('/register', function(req, res, next) {
 
 
 
-router.post('/login', firebaseLogin, createSessionCookie, setSessionCookie,  function (req, res, next) {
+router.post('/login', firebaseLogin, createSessionCookie,  function (req, res, next) {
  // console.log(req.body.token);
  //    if (req.body.token === undefined){ //api call from web
         var userToken = res.locals.token;
@@ -47,7 +47,6 @@ router.post('/login', firebaseLogin, createSessionCookie, setSessionCookie,  fun
         serverMethods.serverTokenAuth(userToken, function (fbID) {
            serverMethods.generateDBID(fbID, function (profileID) {
                res.locals.user = profileID;
-               console.log(res.cookies);
                res.redirect('/profiles/' + profileID);
            })
         });
@@ -64,7 +63,7 @@ router.post('/login', firebaseLogin, createSessionCookie, setSessionCookie,  fun
     // }
 });
 
-router.post('/session', createSessionCookie, setSessionCookie, function (req, res, next) {
+router.post('/session', createSessionCookie, function (req, res, next) {
     var token = req.body.token;
     serverMethods.serverTokenAuth(token, function (firebaseID) {
         serverMethods.generateDBID(firebaseID, function (profileID) {
