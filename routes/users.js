@@ -3,6 +3,10 @@ var router = express.Router();
 var dbHelper = require('../utils/dbHelper');
 var serverMethods = require('../utils/serverMethods');
 var firebase = require('firebase');
+var createSessionCookie = require('../middleware/createSessionCookie');
+var setSessionCookie = require('../middleware/setSessionCookie');
+var firebaseLogin = require('../middleware/firebaseLogin');
+var voidSessionCookie = require('../middleware/voidSessionCookie');
 
 var config = {
     apiKey: process.env.FBKEY,
@@ -33,42 +37,52 @@ router.post('/register', function(req, res, next) {
     res.send({response: 'respond with a resource'});
 });
 
-router.post('/login', function (req, res, next) {
+
+
+router.post('/login', firebaseLogin, createSessionCookie, setSessionCookie,  function (req, res, next) {
  // console.log(req.body.token);
-    if (req.body.token === undefined){
-        var userName = req.body.username;
-        var password = req.body.password;
-        firebase.auth().signInWithEmailAndPassword(userName, password).then(function (user) {
-            user.user.getIdToken(true).then(function (value) {
-                // return serverMethods.serverTokenAuth(value); //prints the UID from Firebase
-                serverMethods.serverTokenAuth(value, function (firebaseID) {
-                    serverMethods.generateDBID(firebaseID, function (profileID) {
+ //    if (req.body.token === undefined){ //api call from web
+        var userToken = res.locals.token;
 
-                       return res.redirect('/profiles/' + profileID);
-
-                    });
-                });
-            });
-        }).catch(function (reason) {
-            console.log(reason)
+        serverMethods.serverTokenAuth(userToken, function (fbID) {
+           serverMethods.generateDBID(fbID, function (profileID) {
+               res.locals.user = profileID;
+               console.log(res.cookies);
+               res.redirect('/profiles/' + profileID);
+           })
         });
-    }else {
-        var token = req.body.token;
-        serverMethods.serverTokenAuth(token, function (firebaseID) {
-            serverMethods.generateDBID(firebaseID, function (profileID) {
-                dbHelper.retriveAllUserInfo(profileID, function (returnedDBSearch) {
-                    res.send(returnedDBSearch);
-                });
+
+    // }else { //api call from phone app
+    //     var token = req.body.token;
+    //     serverMethods.serverTokenAuth(token, function (firebaseID) {
+    //         serverMethods.generateDBID(firebaseID, function (profileID) {
+    //             dbHelper.retriveAllUserInfo(profileID, function (returnedDBSearch) {
+    //                 res.send(returnedDBSearch);
+    //             });
+    //         });
+    //     })
+    // }
+});
+
+router.post('/session', createSessionCookie, setSessionCookie, function (req, res, next) {
+    var token = req.body.token;
+    serverMethods.serverTokenAuth(token, function (firebaseID) {
+        serverMethods.generateDBID(firebaseID, function (profileID) {
+            dbHelper.retriveAllUserInfo(profileID, function (returnedDBSearch) {
+                res.send(returnedDBSearch);
             });
-        })
-    }
-
-
+        });
+    })
 });
 
 router.post("/recovery", function (req, res) {
 
     res.send({message: "Email Sent", redirect: "/"});
+});
+
+router.use('/logout', voidSessionCookie);
+router.get('/logout', function (req, res) {
+
 });
 
 

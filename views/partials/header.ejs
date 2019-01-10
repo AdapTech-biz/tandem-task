@@ -7,9 +7,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <%
 
-    if(typeof userProfile != 'undefined'){ %>
+    if(typeof userData != 'undefined'){ %>
         <title>
-            <%= userProfile.firstName +" "+ userProfile.lastName%>
+            <%= userData.userProfile.firstName +" "+ userData.userProfile.lastName%>
         </title>
 
         <% } else { %>
@@ -85,7 +85,7 @@
 
                <a href="/"><img src="https://d1t99vwu1x3ov2.cloudfront.net/images/PinUpLogo.png" height="50px"></a> 
                 <ul class="nav navbar-right">
-                    <% if(typeof user != 'undefined'){ %>
+                    <% if(typeof token != 'undefined'){ %>
                     <% if(typeof currentBalance != 'undefined'){ %>
                         <li>
                             <div class="dropdown ">
@@ -123,15 +123,15 @@
                             </div>
                         </li>
                         <% } %>
-                        <% if (typeof user != 'undefined' && (typeof userProfile == 'undefined' || user._id != userProfile._id) ){ %>
+                        <% if (typeof token != 'undefined' && (typeof userData.userProfile == 'undefined' || user != userData.userProfile._id) ){ %>
                             <li>
-                                <a href= <%= '/profile/' + user._id %> >Back to DashBoard</a>
+                                <a href= <%= '/profiles/' + user %> >Back to DashBoard</a>
                             </li>
 
                             <% } %>
 
                                 <li>
-                                    <a href="/account/logout" id="logout">Log Out</a>
+                                    <a href="/users/logout" id="logout">Log Out</a>
                                 </li>
 
                                 <% } else{ %>

@@ -8,7 +8,7 @@ var picture = "https://mdbootstrap.com/img/Photos/Others/placeholder-avatar.jpg"
 var picture = userData.userProfile.pictureURL;
 }
 %>
-
+<link rel="stylesheet" type="text/css" href="/stylesheets/profile.css">
 <div id="all">
     <div class="section" id="profile-body">
 
@@ -67,7 +67,7 @@ var picture = userData.userProfile.pictureURL;
                                 <div class="card text-center task-cards">
                                     <div class="task-actions">
                                         <form action=<%=
-                                        "/task/" + userData.userProfile._id + "/" + task._id %> method="GET" >
+                                        "/tasks/" + task._id %> method="GET" >
                                         <input type="submit" class="btn btn-info" value=View>
                                         </form>
 
@@ -92,7 +92,7 @@ var picture = userData.userProfile.pictureURL;
                                 <div class="card text-center">
                                     <div class="card-body new-task-body">
                                         <h5 class="card-title">Submit New Task</h5>
-                                        <a href=<%="/task/" + userData.userProfile._id %> class="card-link new-task-plus
+                                        <a href= <%= "/tasks/" + userData.userProfile._id %> class="card-link new-task-plus
                                             boarderless"><i class="fas fa-thumbtack"></i></a>
                                     </div>
                                 </div>
@@ -123,8 +123,7 @@ var picture = userData.userProfile.pictureURL;
 
                                 <div class="card text-center task-cards">
                                     <div class="task-actions">
-                                        <form action=<%="/task/complete/" + userData.userProfile._id +
-                                        "/" + task._id %> method="GET" >
+                                        <form action=<%= "/tasks/" + task._id %> method="GET" >
                                         <input type="submit" class="btn btn-info" value=View>
                                         </form>
 

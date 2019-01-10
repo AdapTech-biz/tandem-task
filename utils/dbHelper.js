@@ -187,8 +187,8 @@ var findTaskwithID = function (taskID, callback){
 var retriveAllUserInfo = function (profileID, callback){
     try{
         Profile.findById(profileID).populate( {path: "connections", select: ["firstName", "pictureURL", "_id"]})
-            .populate({path: "acceptedTasks", populate :({ path: "creator", select: ["firstName", "pictureURL", "_id"]})})
-            .populate({path: "createdTasks", populate:({path: "acceptor", select: ["firstName", "pictureURL", "_id"]})})
+            .populate({path: "acceptedTasks", populate :({ path: "creator", select: ["firstName", "lastName", "pictureURL", "_id"]})})
+            .populate({path: "createdTasks", populate:({path: "acceptor", select: ["firstName", "lastName", "pictureURL", "_id"]})})
             .exec(function (err, foundProfile) {
             if (err)
                 console.log(err);

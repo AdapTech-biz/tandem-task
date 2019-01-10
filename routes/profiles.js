@@ -1,6 +1,8 @@
 var express = require('express');
 var router = express.Router();
 var dbHelper = require('../utils/dbHelper');
+var checkSessionCookie = require('../middleware/checkSessionCookie');
+
 var serverMethods = require('../utils/serverMethods');
 var formidable = require('formidable');
 var cloudinary = require('cloudinary');
@@ -11,12 +13,14 @@ cloudinary.config({
     api_secret: process.env.CLOUDSECRET
 });
 
-
+router.use(checkSessionCookie);
 
 /* GET users listing. */
 router.get('/:id', function(req, res, next) {
     dbHelper.retriveAllUserInfo(req.params.id, function (results) {
-
+        console.log(req.session.userCookie);
+        res.locals.token = "valid";
+        // res.locals.user = req.locals.user;
        res.render('profileView', {userData: results})
     });
 

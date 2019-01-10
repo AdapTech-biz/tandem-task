@@ -1,20 +1,23 @@
 var createError = require('http-errors');
 var express = require('express');
 var mongoose = require('mongoose');
+var session = require('express-session');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var methodOverride = require("method-override");
+var firebase = require('firebase');
 var admin = require('firebase-admin');
 var indexRouter = require('./routes/index');
 var profileRouter = require('./routes/profiles');
 var usersRouter = require('./routes/users');
+var tasksRouter = require('./routes/tasks');
 var app = express();
 
 
 var newJSON = JSON.parse(process.env.json);
 
-
+firebase.auth().setPersistence(firebase.auth.Auth.Persistence.NONE);
 admin.initializeApp({
             credential: admin.credential.cert(newJSON),
             databaseURL: process.env.FBDBURL
@@ -31,13 +34,16 @@ mongoose.connect(process.env.DBLINK, { dbName: process.env.DBNAME, useNewUrlPars
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(session({ secret: "Secret" }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(methodOverride("_method"));
 
+
 app.use('/', indexRouter);
 app.use('/profiles', profileRouter);
 app.use('/users', usersRouter);
+app.use('/tasks', tasksRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
