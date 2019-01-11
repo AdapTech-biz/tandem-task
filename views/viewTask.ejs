@@ -35,7 +35,7 @@
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
           </form>
-          <form action= <%= "/task/" + id + "/" + viewTask._id + "?_method=DELETE" %> method="POST" >
+          <form action= <%= "/task/" + user + "/" + viewTask._id + "?_method=DELETE" %> method="POST" >
             <input type="text" name="task[deletedTask]" value=<%= viewTask._id %> hidden></input>
             <button type="submit" class="btn btn-danger">Delete</button>
 
