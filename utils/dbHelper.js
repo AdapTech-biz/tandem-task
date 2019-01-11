@@ -169,7 +169,7 @@ var updateProfile = function (profileID, updates, callback) {
 };
 
 var findProfileWithID = function (dbID, callback) {
-    Profile.findById(dbID, function (err, foundProfile) {
+    Profile.findById(dbID).populate({path: "connections", select: ["firstName", "lastName", "acceptedTasks", "pictureURL", "_id"]}).exec(function (err, foundProfile) {
         if (err)
             console.log(err);
         callback(foundProfile);

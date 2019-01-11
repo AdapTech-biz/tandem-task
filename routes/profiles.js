@@ -77,4 +77,11 @@ router.patch('/:id/upload', function (req, res, next) {
     });
 });
 
+router.get('/:id/connections', function (req, res, next) {
+    var profileID = req.params.id;
+   dbHelper.findProfileWithID(profileID, function (foundProfile) {
+      res.render("viewConnections", {userProfile: foundProfile})
+   });
+});
+
 module.exports = router;
