@@ -10,7 +10,7 @@
           <form action= <%= "/tasks/" + viewTask._id + "?_method=PUT" %> method=POST class="center">
             <div class="form-group">
               <label class="float-left" for="taskTitle">Title</label>
-              <input type="text" class="form-control " id="taskTitle" name="task[title]" value=<%= "" + viewTask.title %> >
+              <input type="text" class="form-control " id="taskTitle" name="task[title]" value= <%= "" + viewTask.title %> >
             </div>
             <div class="form-group">
               <label class="float-left" for="taskDescription">Description</label>
@@ -20,7 +20,7 @@
             <div class="form-inline">
               <div class="input-group mb-2 mr-sm-2">
                 <h4>
-                  <%= viewTask.payout.amount %>
+                  <%= viewTask.reward %>
                 </h4>
                 <div class="input-group-prepend">
                   <div class="input-group-text">XLM</div>
@@ -50,7 +50,7 @@
           <div class="container" id="task-view">
             <div class="card text-center">
               <div class="card-header">
-                <span class="badge badge-success"><%= viewTask.payout.amount %> XLM</span>
+                <span class="badge badge-success"><%= viewTask.reward %> XLM</span>
               </div>
               <div class="card-body">
                 <h5 class="card-title">
@@ -62,7 +62,7 @@
                 <a href="#" class="btn btn-primary">Edit</a>
               </div>
               <div class="card-footer text-muted">
-                <%= viewTask.date %>
+                <%= viewTask.deadline %>
               </div>
             </div>
           </div>
