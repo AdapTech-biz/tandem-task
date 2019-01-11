@@ -29,6 +29,8 @@ router.get('/:id', function(req, res, next) {
 router.patch('/:id', function(req, res, next){
     var profileID = req.params.id;
     var updates = req.body;
+    if (updates.mobile !== undefined)
+     delete  updates["mobile"];
 
 
    dbHelper.updateProfile(profileID, updates, function (updateStatus) {
