@@ -9,13 +9,12 @@ router.use(checkSessionCookie);
 
 router.get('/:id', function (req, res) {
     var taskID = req.params.id;
-   Task.findById(taskID, function (err, foundTask) {
-      try{
-          res.send(foundTask);
-      } catch (err) {
-          console.log(err);
-      }
-   });
+
+   dbHelper.findTaskwithID(taskID, function (task) {
+       if (!req.body.mobile)
+        return res.render("viewTask", {viewTask: task});
+       else return res.send(task);
+   })
 });
 
 module.exports = router;

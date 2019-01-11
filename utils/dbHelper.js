@@ -177,11 +177,14 @@ var findProfileWithID = function (dbID, callback) {
 };
 
 var findTaskwithID = function (taskID, callback){
-    Task.findById(taskID, function (err, task) {
-        if (err)
-            console.log(err);
-        callback(task);
-    })
+    Task.findById(taskID).populate({ path: "creator", select: ["firstName", "lastName", "pictureURL", "_id"]})
+        .populate({ path: "acceptor", select: ["firstName", "lastName", "pictureURL", "_id"]})
+        .exec(function (err, foundTask){
+            if (err)
+                console.log(err);
+            callback(foundTask);
+    });
+
 };
 
 var retriveAllUserInfo = function (profileID, callback){
