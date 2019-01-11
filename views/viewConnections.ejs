@@ -37,7 +37,7 @@ var picture = userProfile.pictureURL;
                                     </h3>
                                     <% if(typeof pendingPayouts != 'undefined' && pendingPayouts.length > 0){ %>
                                         <h5 class="card-title">
-                                            <a href=< %='/task/payout/pending/' + userProfile._id %> id='payout-signal'>Payouts Requiring Approval (<span id="payout-counter"> <%= pendingPayouts.length %> </span>)</a>
+                                            <a href=<%= '/task/payout/pending/' + userProfile._id %> id='payout-signal'>Payouts Requiring Approval (<span id="payout-counter"> <%= pendingPayouts.length %> </span>)</a>
                                         </h5>
                                         <% } %>
                                 </div>
@@ -75,7 +75,7 @@ var picture = userProfile.pictureURL;
                                         </form>
                                         
                                         <% } %>
-                                        <td> <a href=<%='/profile/' + partner._id %> > <%= partner.firstName %> </a> </td>
+                                        <td> <a href=<%= '/profile/' + partner._id %> > <%= partner.firstName %> </a> </td>
                                         <td>
                                             <%= partner.lastName %>
                                         </td>
